@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TooManyListenersException;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import com.bubblewrap.plants.webserver.jdbc.SensorDao;
 import com.bubblewrap.plants.webserver.model.Sensor;
 import com.bubblewrap.plants.webserver.model.SensorData;
-import com.bubblewrap.plants.webserver.model.Sensors;
 
 import gnu.io.NRSerialPort;
 import gnu.io.SerialPortEvent;
@@ -81,16 +79,6 @@ public class SerialCommunicator implements SerialPortEventListener {
 				log.error("Failed to read data: " + e.toString());
 			}
 		}
-	}
-	
-	public List<Sensor> getAllSensorsByType(Sensors type){
-		List<Sensor> result = new ArrayList<Sensor>();
-		for(Sensor s : sensors){
-			if(s.getType().equals(type)){
-				result.add(s);
-			}
-		}
-		return result;
 	}
 	
 	public void updateSensors(){

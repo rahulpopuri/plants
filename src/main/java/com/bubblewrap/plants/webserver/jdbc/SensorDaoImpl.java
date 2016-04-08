@@ -36,9 +36,6 @@ public class SensorDaoImpl implements SensorDao {
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
-	@Autowired
-	protected SerialCommunicator serialCommunicator;
-
 	@Override
 	public List<Sensor> getAllSensors() {
 		List<Sensor> result = new ArrayList<Sensor>();
@@ -74,10 +71,21 @@ public class SensorDaoImpl implements SensorDao {
 		jdbcTemplate.update(writeSensorData, sensorId, value);
 	}
 
-	// TODO Move this code to this class
 	@Override
 	public List<Sensor> getAllSensorsByType(Sensors type) {
-		return serialCommunicator.getAllSensorsByType(type);
+		List<Sensor> result = new ArrayList<Sensor>();
+		for(Sensor s : getAllSensors()){
+			if(s.getType().equals(type)){
+				result.add(s);
+			}
+		}
+		return result;
+	}
+
+	// TODO Pass in date range to filter
+	@Override
+	public List<SensorData> getLightSensorData() {
+		return getSensorData(1);
 	}
 
 }

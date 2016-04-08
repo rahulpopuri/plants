@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 
 import com.bubblewrap.plants.webserver.model.Sensor;
+import com.bubblewrap.plants.webserver.model.SensorData;
 import com.bubblewrap.plants.webserver.model.Sensors;
 
 public interface SensorDao {
@@ -17,5 +18,8 @@ public interface SensorDao {
 
 	@Bean
 	public List<Sensor> getAllSensorsByType(Sensors type);
+
+	@Bean
+	public List<SensorData> getLightSensorData();
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bubblewrap.plants.webserver.jdbc.SensorDao;
 import com.bubblewrap.plants.webserver.model.Sensor;
+import com.bubblewrap.plants.webserver.model.SensorData;
 import com.bubblewrap.plants.webserver.model.Sensors;
 
 @Service
@@ -29,6 +30,16 @@ public class SensorServiceImpl implements SensorService {
 	@Override
 	public List<Sensor> getTempSensors() {
 		return sensorDao.getAllSensorsByType(Sensors.TEMPERATURE);
+	}
+
+	@Override
+	public List<SensorData> getLightSensorData() {
+		return sensorDao.getLightSensorData();
+	}
+
+	@Override
+	public List<Sensor> getAllSensorsByType(Sensors type) {
+		return sensorDao.getAllSensorsByType(type);
 	}
 
 }

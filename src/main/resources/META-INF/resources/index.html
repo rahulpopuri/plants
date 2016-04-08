@@ -1,12 +1,106 @@
-<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<HTML>
-   <HEAD>
-      <TITLE>
-         A Small Hello 
-      </TITLE>
-   </HEAD>
-<BODY>
-   <H1>Hi</H1>
-   <P>This is very minimal "hello world" HTML document.</P> 
-</BODY>
-</HTML>
+<html>
+<head>
+<title>Plants</title>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+	<div id="lightContainer"
+		style="width: 550px; height: 400px; margin: 0 auto"></div>
+	<p></p>
+	<div id="tempContainer"
+		style="width: 550px; height: 400px; margin: 0 auto"></div>
+	<script language="JavaScript">
+		Highcharts.setOptions({
+			global : {
+				useUTC : false
+			}
+		});
+		$(document).ready(
+				function() {
+					draw_light_chart();
+					draw_temp_chart();
+
+					var lightJson = new Array();
+					var tempJson = new Array();
+					function draw_light_chart() {
+						$.getJSON("/rest/sensors/light",
+								function(light) {
+									var data = light[0].data;
+									for (i = 0; i < data.length; i++) {
+										lightJson.push([ data[i].date,
+												data[i].value * 100 / 1024 ]);
+									}
+									/** Declare options after success callback. */
+									var options = {
+										title : {
+											text : "Light Data",
+											align : "center"
+										},
+										chart : {
+											renderTo : 'lightContainer',
+											type : 'line'
+										},
+										xAxis : {
+											type : 'datetime'
+										},
+										yAxis : {
+											title : {
+												text : 'Light %'
+											}
+										},
+										series : [ {
+											data : lightJson,
+											name : "Light",
+											color : '#418F27'
+										} ]
+									};
+
+									/** Create a chart instance and pass options. */
+									var chart = new Highcharts.Chart(options);
+								})};
+
+					function draw_temp_chart() {
+						$.getJSON("/rest/sensors/temp",
+								function(temp) {
+									var data = temp[0].data;
+									for (i = 0; i < data.length; i++) {
+										tempJson
+												.push([ data[i].date,
+														data[i].value ]);
+									}
+									/** Declare options after success callback. */
+									var options = {
+										title : {
+											text : "Temperature Data",
+											align : "center"
+										},
+										chart : {
+											renderTo : 'tempContainer',
+											type : 'line'
+										},
+										xAxis : {
+											labels: {
+												useHTML : true
+											},
+											type : 'datetime'
+										},
+										yAxis : {
+											title : {
+												text : 'Temp (℃)'
+											}
+										},
+										series : [ {
+											data : tempJson,
+											name : "Indoor Temperature"
+										} ]
+									};
+
+									/** Create a chart instance and pass options. */
+									var chart = new Highcharts.Chart(options);
+								})};
+				});
+	</script>
+</body>
+</html>
