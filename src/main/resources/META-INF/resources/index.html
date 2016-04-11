@@ -7,10 +7,10 @@
 </head>
 <body>
 	<div id="lightContainer"
-		style="width: 550px; height: 400px; margin: 0 auto"></div>
+		style="width: 50%; height: 400px; margin: 0 auto; float:left;"></div>
 	<p></p>
 	<div id="tempContainer"
-		style="width: 550px; height: 400px; margin: 0 auto"></div>
+		style="width: 50%; height: 400px; margin: 0 auto; float:right;"></div>
 	<script language="JavaScript">
 		Highcharts.setOptions({
 			global : {
@@ -54,7 +54,10 @@
 											data : lightJson,
 											name : "Light",
 											color : '#418F27'
-										} ]
+										} ],
+										credits: {
+										    enabled: false
+										},
 									};
 
 									/** Create a chart instance and pass options. */
