@@ -42,4 +42,14 @@ public class SensorServiceImpl implements SensorService {
 		return sensorDao.getAllSensorsByType(type);
 	}
 
+	@Override
+	public List<SensorData> getRecentLightSensorData() {
+		return sensorDao.getRecentLightSensorData();
+	}
+
+	@Override
+	public List<SensorData> getRecentTempSensorData() {
+		return sensorDao.getRecentTempSensorData();
+	}
+
 }

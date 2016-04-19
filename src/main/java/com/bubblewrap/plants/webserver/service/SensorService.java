@@ -24,5 +24,12 @@ public interface SensorService {
 
 	@Bean
 	public List<SensorData> getLightSensorData();
+	
+	@Bean
+	public List<SensorData> getRecentLightSensorData();
+
+	@Bean
+	public List<SensorData> getRecentTempSensorData();
+
 
 }
