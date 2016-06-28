@@ -28,4 +28,7 @@ public interface SensorDao {
 	@Bean
 	public List<SensorData> getRecentTempSensorData();
 
+	@Bean
+	public List<SensorData> getRecentMoistureSensorData(int sensorId);
+
 }

@@ -31,5 +31,8 @@ public interface SensorService {
 	@Bean
 	public List<SensorData> getRecentTempSensorData();
 
+	@Bean
+	public List<SensorData> getRecentMoistureSensorData(int sensorId);
+
 
 }

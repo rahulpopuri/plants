@@ -116,4 +116,9 @@ public class SensorDaoImpl implements SensorDao {
 		return getRecentSensorData(2);
 	}
 
+	@Override
+	public List<SensorData> getRecentMoistureSensorData(int sensorId) {
+		return getRecentSensorData(3);
+	}
+
 }

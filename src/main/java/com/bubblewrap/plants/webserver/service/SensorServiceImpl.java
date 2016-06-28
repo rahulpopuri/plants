@@ -52,4 +52,9 @@ public class SensorServiceImpl implements SensorService {
 		return sensorDao.getRecentTempSensorData();
 	}
 
+	@Override
+	public List<SensorData> getRecentMoistureSensorData(int sensorId) {
+		return sensorDao.getRecentMoistureSensorData(sensorId);
+	}
+
 }

@@ -52,5 +52,10 @@ public class SensorController {
 		return new ResponseEntity<List<SensorData>>(service.getRecentTempSensorData(),HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/moisture/recentData" , produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<SensorData>> getRecentMoistureData(){
+		return new ResponseEntity<List<SensorData>>(service.getRecentMoistureSensorData(1),HttpStatus.OK);
+	}
+	
 
 }

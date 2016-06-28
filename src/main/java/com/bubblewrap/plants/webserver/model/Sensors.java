@@ -1,5 +1,5 @@
 package com.bubblewrap.plants.webserver.model;
 
 public enum Sensors {
-	LIGHT, TEMPERATURE
+	LIGHT, TEMPERATURE, M_OREGANO
 }
