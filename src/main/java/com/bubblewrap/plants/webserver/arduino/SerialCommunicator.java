@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.TooManyListenersException;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.bubblewrap.plants.webserver.jdbc.SensorDao;
 import com.bubblewrap.plants.webserver.model.Sensor;
 import com.bubblewrap.plants.webserver.model.SensorData;
+import com.bubblewrap.plants.webserver.service.PushBulletService;
 
 import gnu.io.NRSerialPort;
 import gnu.io.SerialPortEvent;
@@ -42,6 +44,9 @@ public class SerialCommunicator implements SerialPortEventListener {
 	
 	@Autowired
 	private SensorDao sensorDao;
+	
+	@Inject
+	private PushBulletService pushBulletService;
 
 	@PostConstruct
 	private void init() {
@@ -73,6 +78,7 @@ public class SerialCommunicator implements SerialPortEventListener {
 								updateSensors();
 							}
 						}
+						checkSensorThresholds();
 					}
 				}
 			} catch (Exception e) {
@@ -83,6 +89,18 @@ public class SerialCommunicator implements SerialPortEventListener {
 	
 	public void updateSensors(){
 		this.sensors = sensorDao.getAllSensors();
+	}
+	
+	private void checkSensorThresholds() {
+		for(Sensor s : this.sensors){
+			Float threshold = sensorDao.getSensorThreshold(s.getId()); 
+			if(threshold != null){
+				if(s.getData().get(s.getData().size()-1).getValue() >= threshold){
+					// Time to send an email
+					// Pushbullet code goes here
+				}
+			}
+		}
 	}
 	
 	private void connect() {

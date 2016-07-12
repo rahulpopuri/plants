@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,9 +53,9 @@ public class SensorController {
 		return new ResponseEntity<List<SensorData>>(service.getRecentTempSensorData(),HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/moisture/recentData" , produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<SensorData>> getRecentMoistureData(){
-		return new ResponseEntity<List<SensorData>>(service.getRecentMoistureSensorData(1),HttpStatus.OK);
+	@RequestMapping(value = "/moisture/recentData/{sensor_id}" , produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<SensorData>> getRecentMoistureData(@PathVariable("sensor_id") int sensorId){
+		return new ResponseEntity<List<SensorData>>(service.getRecentMoistureSensorData(sensorId),HttpStatus.OK);
 	}
 	
 

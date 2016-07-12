@@ -30,5 +30,8 @@ public interface SensorDao {
 
 	@Bean
 	public List<SensorData> getRecentMoistureSensorData(int sensorId);
+	
+	@Bean
+	public Float getSensorThreshold(int sensorId);
 
 }

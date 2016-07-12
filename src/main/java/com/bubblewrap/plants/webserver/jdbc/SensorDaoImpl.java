@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +33,9 @@ public class SensorDaoImpl implements SensorDao {
 
 	@Value("${sql.retrieveLatestSensorData}")
 	private String retrieveLatestSensorData;
+	
+	@Value("${sql.retrieveSensorThreshold}")
+	private String retrieveSensorThreshold;
 
 	@Value("${sql.writeSensorData}")
 	private String writeSensorData;
@@ -118,7 +122,16 @@ public class SensorDaoImpl implements SensorDao {
 
 	@Override
 	public List<SensorData> getRecentMoistureSensorData(int sensorId) {
-		return getRecentSensorData(3);
+		return getRecentSensorData(sensorId);
+	}
+	
+	@Override
+	public Float getSensorThreshold(int sensorId) {
+		try {
+			return jdbcTemplate.queryForObject(retrieveSensorThreshold, Float.class,sensorId);
+		} catch (EmptyResultDataAccessException e){
+			return null;
+		}
 	}
 
 }

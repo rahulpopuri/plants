@@ -13,6 +13,8 @@
 		style="width: 50%; height: 400px; margin: 0 auto; float:right;"></div>
 	<div id="moisture1Container"
 		style="width: 20%; height: 400px; margin: 0 auto; float:left;"></div>
+	<div id="moisture2Container"
+		style="width: 20%; height: 400px; margin: 0 auto; float:left;"></div>
 	<script language="JavaScript">
 		Highcharts.setOptions({
 			global : {
@@ -24,10 +26,12 @@
 					draw_light_chart();
 					draw_temp_chart();
 					draw_m1_chart();
+					draw_m2_chart();
 
 					var lightJson = new Array();
 					var tempJson = new Array();
 					var m1Json = new Array();
+					var m2Json = new Array();
 					function draw_light_chart() {
 						$.getJSON("/rest/sensors/light/recentData",
 								function(light) {
@@ -109,7 +113,7 @@
 									var chart = new Highcharts.Chart(options);
 								})};
 					function draw_m1_chart() {
-						$.getJSON("/rest/sensors/moisture/recentData",
+						$.getJSON("/rest/sensors/moisture/recentData/3",
 								function(m) {
 									for (i = 0; i < m.length; i++) {
 										m1Json
@@ -140,6 +144,49 @@
 										series : [ {
 											data : m1Json,
 											name : "Oregano Moisture"
+										} ],
+										credits: {
+										    enabled: false
+										},
+									};
+	
+									/** Create a chart instance and pass options. */
+									var chart = new Highcharts.Chart(options);
+								})};
+								
+					function draw_m2_chart() {
+						$.getJSON("/rest/sensors/moisture/recentData/4",
+								function(m) {
+									for (i = 0; i < m.length; i++) {
+										m2Json
+												.push([ m[i].date,
+														(1023-m[i].value) *100/1024 ]);
+									}
+									/** Declare options after success callback. */
+									var options = {
+										title : {
+											text : "Basil Moisture Data",
+											align : "center"
+										},
+										chart : {
+											renderTo : 'moisture2Container',
+											type : 'line'
+										},
+										xAxis : {
+											labels: {
+												useHTML : true
+											},
+											type : 'datetime'
+										},
+										yAxis : {
+											title : {
+												text : 'Moisture %'
+											}
+										},
+										series : [ {
+											data : m2Json,
+											name : "Basil Moisture",
+											color : '#cc33ff'
 										} ],
 										credits: {
 										    enabled: false
