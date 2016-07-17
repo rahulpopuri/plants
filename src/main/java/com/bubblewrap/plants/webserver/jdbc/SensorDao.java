@@ -34,4 +34,7 @@ public interface SensorDao {
 	@Bean
 	public Float getSensorThreshold(int sensorId);
 
+	@Bean
+	public List<Sensor> getCurrentSensorValues();
+
 }

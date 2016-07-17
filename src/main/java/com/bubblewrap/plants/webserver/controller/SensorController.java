@@ -28,6 +28,11 @@ public class SensorController {
 	public ResponseEntity<List<Sensor>> getSensors(){
 		return new ResponseEntity<List<Sensor>>(service.getAllSensors(),HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/current", method = RequestMethod.GET)
+	public ResponseEntity<List<Sensor>> getCurrentSensors(){
+		return new ResponseEntity<List<Sensor>>(service.getCurrentSensorValues(),HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/temp", method = RequestMethod.GET)
 	public ResponseEntity<List<Sensor>> getTemp(){

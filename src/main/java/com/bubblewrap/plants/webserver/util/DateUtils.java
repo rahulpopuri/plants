@@ -1,5 +1,6 @@
 package com.bubblewrap.plants.webserver.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.joda.time.DateTime;
@@ -20,6 +21,10 @@ public class DateUtils {
 	
 	public static Date getNDaysBehind(int n) {
 		return getNDaysAhead(-1*n);
+	}
+	
+	public static String getDateString(Date date, String format){
+		return new SimpleDateFormat(format).format(date);
 	}
 
 }

@@ -27,21 +27,23 @@ public class SensorDaoImpl implements SensorDao {
 
 	@Value("${sql.retrieveSensorData}")
 	private String retrieveSensorData;
-	
+
 	@Value("${sql.retrieveRecentSensorData}")
 	private String retrieveRecentSensorData;
 
 	@Value("${sql.retrieveLatestSensorData}")
 	private String retrieveLatestSensorData;
-	
+
 	@Value("${sql.retrieveSensorThreshold}")
 	private String retrieveSensorThreshold;
 
 	@Value("${sql.writeSensorData}")
 	private String writeSensorData;
-	
+
 	@Value("${graphs.daysToShow}")
 	private int daysToShow;
+
+	private final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
@@ -74,18 +76,12 @@ public class SensorDaoImpl implements SensorDao {
 		}
 		return data;
 	}
-	
-	private List<SensorData> getRecentSensorData(int sensorId){
-		List<SensorData> data = new ArrayList<SensorData>();
-		
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(retrieveRecentSensorData, sensorId, DateUtils.getNDaysBehind(daysToShow), new Date());
-		for (Map<String, Object> row : rows) {
-			SensorData sd = new SensorData();
-			sd.setValue((Double) row.get("value"));
-			sd.setDate((Date) row.get("as_of_date"));
-			data.add(sd);
-		}
-		return data;
+
+	private List<SensorData> getRecentSensorData(int sensorId) {
+		String query = String.format(retrieveRecentSensorData, sensorId,
+				DateUtils.getDateString(DateUtils.getNDaysBehind(daysToShow), DEFAULT_DATE_FORMAT),
+				DateUtils.getDateString(new Date(), DEFAULT_DATE_FORMAT));
+		return jdbcTemplate.query(query, new SensorDataRowMapper());
 	}
 
 	@Override
@@ -97,8 +93,8 @@ public class SensorDaoImpl implements SensorDao {
 	@Override
 	public List<Sensor> getAllSensorsByType(Sensors type) {
 		List<Sensor> result = new ArrayList<Sensor>();
-		for(Sensor s : getAllSensors()){
-			if(s.getType().equals(type)){
+		for (Sensor s : getAllSensors()) {
+			if (s.getType().equals(type)) {
 				result.add(s);
 			}
 		}
@@ -124,14 +120,26 @@ public class SensorDaoImpl implements SensorDao {
 	public List<SensorData> getRecentMoistureSensorData(int sensorId) {
 		return getRecentSensorData(sensorId);
 	}
-	
+
 	@Override
 	public Float getSensorThreshold(int sensorId) {
 		try {
-			return jdbcTemplate.queryForObject(retrieveSensorThreshold, Float.class,sensorId);
-		} catch (EmptyResultDataAccessException e){
+			return jdbcTemplate.queryForObject(retrieveSensorThreshold, Float.class, sensorId);
+		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public List<Sensor> getCurrentSensorValues() {
+		List<Sensor> result = new ArrayList<Sensor>();
+		List<Sensor> sensors = jdbcTemplate.query(retrieveSensors, new SensorRowMapper());
+
+		for (Sensor sensor : sensors) {
+			String latestDataQuery = String.format(retrieveLatestSensorData, sensor.getId());
+			sensor.setData(jdbcTemplate.query(latestDataQuery, new SensorDataRowMapper()));
+		}
+		return result;
 	}
 
 }

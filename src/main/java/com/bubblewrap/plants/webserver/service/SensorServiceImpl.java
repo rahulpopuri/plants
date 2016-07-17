@@ -57,4 +57,9 @@ public class SensorServiceImpl implements SensorService {
 		return sensorDao.getRecentMoistureSensorData(sensorId);
 	}
 
+	@Override
+	public List<Sensor> getCurrentSensorValues() {
+		return sensorDao.getCurrentSensorValues();
+	}
+
 }
