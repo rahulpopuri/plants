@@ -2,6 +2,7 @@ package com.bubblewrap.plants.webserver.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -13,7 +14,7 @@ public class SensorDataRowMapper implements RowMapper<SensorData> {
 	public SensorData mapRow(ResultSet rs, int arg1) throws SQLException {
 		SensorData sd = new SensorData();
 		sd.setValue(rs.getDouble("value"));
-		sd.setDate(rs.getDate("as_of_date"));
+		sd.setDate((Timestamp)rs.getTimestamp("as_of_date"));
 		return sd;
 	}
 

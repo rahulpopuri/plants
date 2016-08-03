@@ -1,5 +1,6 @@
 package com.bubblewrap.plants.webserver.jdbc;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,7 +72,7 @@ public class SensorDaoImpl implements SensorDao {
 		for (Map<String, Object> row : rows) {
 			SensorData sd = new SensorData();
 			sd.setValue((Double) row.get("value"));
-			sd.setDate((Date) row.get("as_of_date"));
+			sd.setDate((Timestamp)row.get("as_of_date"));
 			data.add(sd);
 		}
 		return data;

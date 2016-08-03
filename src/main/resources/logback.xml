@@ -52,7 +52,7 @@
 	</appender>
 	
 	<!-- Send logs to both console and file audit -->
-	<logger name="com.bubblewrap.plants" level="debug"
+	<logger name="com.bubblewrap.plants" level="all"
 		additivity="false">
 		<appender-ref ref="FILE-AUDIT" />
 		<appender-ref ref="STDOUT" />
@@ -60,6 +60,7 @@
 
 	<root level="error">
 		<appender-ref ref="FILE-ERROR" />
+		<appender-ref ref="STDOUT" />
 	</root>
 
 </configuration>

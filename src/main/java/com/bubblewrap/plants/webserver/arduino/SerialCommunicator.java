@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.TooManyListenersException;
@@ -16,7 +17,6 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import com.bubblewrap.plants.webserver.jdbc.SensorDao;
 import com.bubblewrap.plants.webserver.model.Sensor;
@@ -27,7 +27,7 @@ import gnu.io.NRSerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
-@Service
+//@Service
 public class SerialCommunicator implements SerialPortEventListener {
 
 	private static Logger log = Logger.getLogger(SerialCommunicator.class);
@@ -71,7 +71,7 @@ public class SerialCommunicator implements SerialPortEventListener {
 							if(s.getId() == sensorId){
 								SensorData sd = new SensorData();
 								sd.setValue(sensorValue);
-								sd.setDate(new Date());
+								sd.setDate(new Timestamp(new Date().getTime()));
 								s.addData(sd);
 								s.setLastUpdated(new Date());
 								sensorDao.writeSensorData(sensorId, sensorValue);

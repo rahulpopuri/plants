@@ -1,19 +1,20 @@
 package com.bubblewrap.plants.webserver.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class SensorData {
 
 	private double value;
-	private Date date;
+	private Timestamp date;
 
-	public SensorData(){
-		
+	public SensorData() {
+
 	}
-	
+
 	public SensorData(double value, Date date) {
 		this.value = value;
-		this.date = date;
+		this.date = new Timestamp(date.getTime());
 	}
 
 	public double getValue() {
@@ -24,11 +25,11 @@ public class SensorData {
 		this.value = value;
 	}
 
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 
