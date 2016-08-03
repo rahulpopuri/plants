@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.bubblewrap.plants.webserver.jdbc.SensorDao;
 import com.bubblewrap.plants.webserver.model.Sensor;
@@ -27,7 +28,7 @@ import gnu.io.NRSerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
-//@Service
+@Service
 public class SerialCommunicator implements SerialPortEventListener {
 
 	private static Logger log = Logger.getLogger(SerialCommunicator.class);

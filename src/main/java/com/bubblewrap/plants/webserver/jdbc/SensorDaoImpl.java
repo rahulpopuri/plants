@@ -81,7 +81,7 @@ public class SensorDaoImpl implements SensorDao {
 	private List<SensorData> getRecentSensorData(int sensorId) {
 		String query = String.format(retrieveRecentSensorData, sensorId,
 				DateUtils.getDateString(DateUtils.getNDaysBehind(daysToShow), DEFAULT_DATE_FORMAT),
-				DateUtils.getDateString(new Date(), DEFAULT_DATE_FORMAT));
+				DateUtils.getDateString(DateUtils.getNDaysAhead(1), DEFAULT_DATE_FORMAT));
 		return jdbcTemplate.query(query, new SensorDataRowMapper());
 	}
 
@@ -139,6 +139,7 @@ public class SensorDaoImpl implements SensorDao {
 		for (Sensor sensor : sensors) {
 			String latestDataQuery = String.format(retrieveLatestSensorData, sensor.getId());
 			sensor.setData(jdbcTemplate.query(latestDataQuery, new SensorDataRowMapper()));
+			result.add(sensor);
 		}
 		return result;
 	}

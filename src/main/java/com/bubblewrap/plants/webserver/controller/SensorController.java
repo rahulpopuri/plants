@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bubblewrap.plants.webserver.model.JsonData;
 import com.bubblewrap.plants.webserver.model.Sensor;
 import com.bubblewrap.plants.webserver.model.SensorData;
 import com.bubblewrap.plants.webserver.service.SensorService;
@@ -30,8 +31,11 @@ public class SensorController {
 	}
 	
 	@RequestMapping(value = "/current", method = RequestMethod.GET)
-	public ResponseEntity<List<Sensor>> getCurrentSensors(){
-		return new ResponseEntity<List<Sensor>>(service.getCurrentSensorValues(),HttpStatus.OK);
+	public ResponseEntity<JsonData> getCurrentSensors(){
+		List<Sensor> sensors = service.getCurrentSensorValues();
+		JsonData data = new JsonData();
+		data.setData(sensors);
+		return new ResponseEntity<JsonData>(data,HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/temp", method = RequestMethod.GET)
