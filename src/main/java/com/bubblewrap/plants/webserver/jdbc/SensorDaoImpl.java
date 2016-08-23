@@ -37,9 +37,15 @@ public class SensorDaoImpl implements SensorDao {
 
 	@Value("${sql.retrieveSensorThreshold}")
 	private String retrieveSensorThreshold;
+	
+	@Value("${sql.retrieveSensorLastNotified}")
+	private String retrieveSensorLastNotified;
 
 	@Value("${sql.writeSensorData}")
 	private String writeSensorData;
+	
+	@Value("${sql.markNotified}")
+	private String markNotified;
 
 	@Value("${graphs.daysToShow}")
 	private int daysToShow;
@@ -142,6 +148,20 @@ public class SensorDaoImpl implements SensorDao {
 			result.add(sensor);
 		}
 		return result;
+	}
+
+	@Override
+	public void markNotified(int id) {
+		jdbcTemplate.update(markNotified, id);
+	}
+
+	@Override
+	public Date getLastNotified(int sensorId) {
+		try {
+			return jdbcTemplate.queryForObject(retrieveSensorLastNotified, Date.class, sensorId);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 }

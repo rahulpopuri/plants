@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.bubblewrap.notifications.NotificationManager;
+import com.bubblewrap.notifications.message.Message;
+import com.bubblewrap.notifications.message.text.TextMessage;
 import com.bubblewrap.plants.webserver.jdbc.SensorDao;
 import com.bubblewrap.plants.webserver.model.Sensor;
 import com.bubblewrap.plants.webserver.model.SensorData;
@@ -35,7 +38,10 @@ public class SerialCommunicator implements SerialPortEventListener {
 	
 	@Value("${serial.port}")
 	private String portName;
-
+	
+	@Value("${notification.text}")
+	private String notificationText;
+	
 	private NRSerialPort serialPort;
 
 	private InputStream input;
@@ -52,6 +58,7 @@ public class SerialCommunicator implements SerialPortEventListener {
 	@PostConstruct
 	private void init() {
 		updateSensors();
+		checkSensorThresholds();
 		connect();
 	}
 
@@ -94,14 +101,28 @@ public class SerialCommunicator implements SerialPortEventListener {
 	
 	private void checkSensorThresholds() {
 		for(Sensor s : this.sensors){
-			Float threshold = sensorDao.getSensorThreshold(s.getId()); 
+			Float threshold = sensorDao.getSensorThreshold(s.getId());
+			Date last_notified = sensorDao.getLastNotified(s.getId());
 			if(threshold != null){
-				if(s.getData().get(s.getData().size()-1).getValue() >= threshold){
-					// Time to send an email
-					// Pushbullet code goes here
+				double currentValue = s.getMostRecentData().getValue();
+				
+				if( currentValue >= threshold && toNotify(last_notified)){
+					Message text = new TextMessage(notificationText,s.getName() + " needs to be watered. Current moisture level = " + currentValue + ", threshold = " + threshold);
+					NotificationManager.getInstance().addMessage(text);
+					this.sensorDao.markNotified(s.getId());
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Checks if a notification has been sent for the sensor in the past 24 hours
+	 * @param lastNotified
+	 * @return true if notification needs to be sent out, false otherwise
+	 */
+	private boolean toNotify(Date lastNotified) {
+		long timeDiff = new Date().getTime() - lastNotified.getTime();
+		return (timeDiff/1000) > 86400;
 	}
 	
 	private void connect() {

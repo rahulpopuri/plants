@@ -1,5 +1,6 @@
 package com.bubblewrap.plants.webserver.jdbc;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -36,5 +37,11 @@ public interface SensorDao {
 
 	@Bean
 	public List<Sensor> getCurrentSensorValues();
+
+	@Bean
+	public void markNotified(int id);
+
+	@Bean
+	public Date getLastNotified(int id);
 
 }

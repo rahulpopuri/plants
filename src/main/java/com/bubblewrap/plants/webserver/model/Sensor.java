@@ -1,6 +1,7 @@
 package com.bubblewrap.plants.webserver.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +77,11 @@ public class Sensor {
 
 	public void setData(List<SensorData> data) {
 		this.data = data;
+	}
+	
+	public SensorData getMostRecentData() {
+		Collections.sort(this.data);
+		return this.data.get(this.data.size()-1);
 	}
 
 	@Override

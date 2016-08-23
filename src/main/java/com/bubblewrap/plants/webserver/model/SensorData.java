@@ -3,7 +3,7 @@ package com.bubblewrap.plants.webserver.model;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class SensorData {
+public class SensorData implements Comparable<SensorData> {
 
 	private double value;
 	private Timestamp date;
@@ -36,6 +36,14 @@ public class SensorData {
 	@Override
 	public String toString() {
 		return "SensorData [value=" + value + ", date=" + date + "]";
+	}
+
+	/**
+	 * Sort by timestamp
+	 */
+	@Override
+	public int compareTo(SensorData o) {
+		return this.getDate().compareTo(o.getDate());
 	}
 
 }
