@@ -31,7 +31,7 @@ The goal of this project is to allow me to monitor moisture levels of my plants 
 
 #Current State
 
-I've hooked up my Oregano and Basil plants, as well as light and temperature sensors to the Arduino. The Arduino sends sensor values to the Pi every 10 minutes - these values are stored in MySQL tables. If the moisture levels fall below a predefined threshold (currently 40%) the server will notify me via text message.
+I've hooked up my Oregano and Basil plants, as well as light and temperature sensors to the Arduino. The Arduino sends sensor values wirelessly to the Pi every 10 minutes - these values are stored in MySQL tables. I use a pair of NRF24L01 modules for wireless communication. If the moisture levels fall below a predefined threshold (currently 40%) the server will notify me via text message.
 
 *Sample text :*
 Oregano needs to be watered. Current moisture level = 620, threshold = 600 
