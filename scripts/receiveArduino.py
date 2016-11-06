@@ -30,21 +30,13 @@ radio.startListening()
 
 app = Flask(__name__)
 
-message = [
-    {
-        'id':1,
-        'timestamp': 12356324,
-        'message': u'Hello World!'
-    }
-]
-
-def do_post(message):
-    url = 'http://192.168.0.105:8111/rest/sensors/test'
-    data = {"id": 1,"message": message}
-    
-    headers = {'Content-Type': 'application/json'}
-
-    response = requests.post(url,json=data)
+def post_plant_data(message):
+    url = 'http://localhost:8111/rest/sensors/writeData'
+    for line in message.split(","):        
+        data = {"id": line.split(":")[0],"value": line.split(":")[1]}
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(url,json=data)
+        
     return
     
 def loop():
@@ -55,20 +47,25 @@ def loop():
 
             receivedMessage = []
             radio.read(receivedMessage, radio.getDynamicPayloadSize())
-            print("Received: {}".format(receivedMessage))
+            #print("Received: {}".format(receivedMessage))
             string = ""
 
             for n in receivedMessage:
+                # Stop if you see null
+                if(n == 0):
+                    break
+                # Otherwise convert int to ascii char
                 if (n >= 32 and n <= 126):
-                    string += chr(n)
-            print ("Message: {}".format(string))
-            do_post(string)
+                    string += chr(n);
+                    
+            #print ("Message: {}".format(string))
+            post_plant_data(string)
     finally:
         GPIO.cleanup()
 
 @app.route('/api/v1/messages', methods=['GET'])
 def get_messages():
-    return jsonify({'message': message})
+    return jsonify({'message': "Test"})
 
 @app.route('/')
 def index():
