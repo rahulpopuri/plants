@@ -17,33 +17,35 @@
 <script src="tables.js"></script>
 </head>
 <body>
-	<table id="table_current_sensors" class="stripe" cellspacing="0"
+	<table id="table_current_sensors" class="stripe hover cell-border dt-center" cellspacing="0"
 		width="50%" align="center">
 		<thead>
 			<tr>
 				<th>Sensor</th>
-				<th>value</th>
+				<th>Raw Value</th>
 				<th>Last Updated</th>
 			</tr>
 		</thead>
 	</table>
 
-	<div id="lightContainer"
-		style="width: 25%; height: 400px; margin: 50 auto; float: left;"></div>
-	<div id="tempContainer"
-		style="width: 25%; height: 400px; margin: 50 auto; float: left;"></div>
+<!-- 	<div id="lightContainer" -->
+<!-- 		style="width: 10%; height: 400px; margin: 50 auto; float: left;"></div> -->
+<!-- 	<div id="tempContainer" -->
+<!-- 		style="width: 10%; height: 400px; margin: 50 auto; float: left;"></div> -->
 	<div id="moisture1Container"
-		style="width: 25%; height: 400px; margin: 50 auto; float: left;"></div>
+		style="width: 33%; height: 400px; margin: 50 auto; float: left;"></div>
 	<div id="moisture2Container"
-		style="width: 25%; height: 400px; margin: 50 auto; float: left;"></div>
-	<footer style="position: absolute; bottom: 0;">
+		style="width: 33%; height: 400px; margin: 50 auto; float: left;"></div>
+	<div id="moisture3Container"
+		style="width: 33%; height: 400px; margin: 50 auto; float: left;"></div>
+	<header style="position: absolute; top: 0;">
 		<p class="copyright">&copy; 2016 Rahul Popuri</p>
 		<div class="pull-right">
 			<a class="social" target="_blank"
 				href="https://github.com/rahulpopuri/plants">Github</a> <a
 				class="social" href="mailto:rahulpopuri@gmail.com">Email</a>
 		</div>
-	</footer>
+	</header>
 	<script language="JavaScript">
 		Highcharts.setOptions({
 			global : {
@@ -53,15 +55,17 @@
 		$(document)
 				.ready(
 						function() {
-							draw_light_chart();
-							draw_temp_chart();
+							//draw_light_chart();
+							//draw_temp_chart();
 							draw_m1_chart();
 							draw_m2_chart();
+							draw_m3_chart();
 
 							var lightJson = new Array();
 							var tempJson = new Array();
 							var m1Json = new Array();
 							var m2Json = new Array();
+							var m3Json = new Array();
 							function draw_light_chart() {
 								$
 										.getJSON(
@@ -76,7 +80,7 @@
 													/** Declare options after success callback. */
 													var options = {
 														title : {
-															text : "Light Data",
+															text : "Light",
 															align : "center"
 														},
 														chart : {
@@ -118,7 +122,7 @@
 											/** Declare options after success callback. */
 											var options = {
 												title : {
-													text : "Temperature Data",
+													text : "Temperature",
 													align : "center"
 												},
 												chart : {
@@ -165,7 +169,7 @@
 													/** Declare options after success callback. */
 													var options = {
 														title : {
-															text : "Oregano Moisture Data",
+															text : "Oregano",
 															align : "center"
 														},
 														chart : {
@@ -185,7 +189,7 @@
 														},
 														series : [ {
 															data : m1Json,
-															name : "Oregano Moisture"
+															name : "Moisture"
 														} ],
 														credits : {
 															enabled : false
@@ -198,7 +202,6 @@
 												})
 							}
 							;
-
 							function draw_m2_chart() {
 								$
 										.getJSON(
@@ -213,7 +216,7 @@
 													/** Declare options after success callback. */
 													var options = {
 														title : {
-															text : "Basil Moisture Data",
+															text : "Basil",
 															align : "center"
 														},
 														chart : {
@@ -233,7 +236,7 @@
 														},
 														series : [ {
 															data : m2Json,
-															name : "Basil Moisture",
+															name : "Moisture",
 															color : '#cc33ff'
 														} ],
 														credits : {
@@ -247,6 +250,55 @@
 												})
 							}
 							;
+							function draw_m3_chart() {
+								$
+										.getJSON(
+												"/rest/sensors/moisture/recentData/5",
+												function(m) {
+													for (i = 0; i < m.length; i++) {
+														m3Json
+																.push([
+																		m[i].date,
+																		(1023 - m[i].value) * 100 / 1024 ]);
+													}
+													/** Declare options after success callback. */
+													var options = {
+														title : {
+															text : "Mint 1",
+															align : "center"
+														},
+														chart : {
+															renderTo : 'moisture3Container',
+															type : 'line'
+														},
+														xAxis : {
+															labels : {
+																useHTML : true
+															},
+															type : 'datetime'
+														},
+														yAxis : {
+															title : {
+																text : 'Moisture %'
+															}
+														},
+														series : [ {
+															data : m3Json,
+															name : "Moisture",
+															color : '#1d5b36'
+														} ],
+														credits : {
+															enabled : false
+														},
+													};
+
+													/** Create a chart instance and pass options. */
+													var chart = new Highcharts.Chart(
+															options);
+												})
+							}
+							;
+
 						});
 	</script>
 	<script>

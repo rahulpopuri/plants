@@ -15,6 +15,9 @@ $(document).ready(function() {
 		"ordering" : false,
 		"info" : false,
 		"paging" : false,
-		"searching" : false
+		"searching" : false,
+		"columnDefs": [
+           { className: "dt-center", "targets": [ 0,1,2 ] }
+         ]
 	});
 });
