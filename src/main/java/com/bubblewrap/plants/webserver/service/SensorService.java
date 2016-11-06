@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 
+import com.bubblewrap.plants.webserver.model.JsonSensorData;
 import com.bubblewrap.plants.webserver.model.Sensor;
 import com.bubblewrap.plants.webserver.model.SensorData;
 import com.bubblewrap.plants.webserver.model.Sensors;
@@ -37,5 +38,7 @@ public interface SensorService {
 	@Bean
 	public List<Sensor> getCurrentSensorValues();
 
+	@Bean
+	public void writeSensorData(JsonSensorData data);
 
 }

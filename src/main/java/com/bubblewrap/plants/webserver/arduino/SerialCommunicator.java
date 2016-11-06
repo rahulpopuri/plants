@@ -31,7 +31,7 @@ import gnu.io.NRSerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
-@Service
+//@Service
 public class SerialCommunicator implements SerialPortEventListener {
 
 	private static Logger log = Logger.getLogger(SerialCommunicator.class);
