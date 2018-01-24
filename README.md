@@ -1,6 +1,6 @@
 # Plants
 
-http://plants.bubblewrapstudios.ca/
+http://plants.bubblewrapstudios.ca/ [Note: currently offline]
 
 The goal of this project is to allow me to monitor moisture levels of my plants - and enable them to notify me when they need to be watered.
 
